@@ -2,11 +2,21 @@
 semver = require 'semver'
 should = require 'should'
 printf = require '../lib/printf'
+long = require 'long'
 
 describe 'sprintf', ->
-  
+
   it 'Specifier: b', ->
     printf('%b', 123).should.eql '1111011'
+
+  it 'Specifier: b (long)', ->
+    printf('%b', long.fromString "123").should.eql '1111011'
+    printf('%b', long.fromString "0111111111111111", 2).should.eql '111111111111111'
+    printf('%b', long.fromString "1111111111111111", 2).should.eql '1111111111111111'
+    printf('%b', long.fromString "0111111111111111000000000000000000000000000000000000000000000000", 2).should.eql '111111111111111000000000000000000000000000000000000000000000000'
+    printf('%b', long.fromString "1111111111111111000000000000000000000000000000000000000000000000", 2).should.eql '1111111111111111000000000000000000000000000000000000000000000000'
+    printf('%b', long.fromString "0111111111111111000000000000000000000000000000000000000000000001", 2).should.eql '111111111111111000000000000000000000000000000000000000000000001'
+    printf('%b', long.fromString "1111111111111111000000000000000000000000000000000000000000000001", 2).should.eql '1111111111111111000000000000000000000000000000000000000000000001'
 
   it 'Flag: (space)', ->
     printf('% d', 42).should.eql    ' 42'
@@ -23,6 +33,14 @@ describe 'sprintf', ->
     printf('%+5d', -42).should.eql  '  -42'
     printf('%+15d', 42).should.eql  '            +42'
     printf('%+15d', -42).should.eql '            -42'
+
+  it 'Flag: + (long)', ->
+    printf('%+d', long.fromString "42").should.eql    '+42'
+    printf('%+d', long.fromString "-42").should.eql   '-42'
+    printf('%+5d', long.fromString "42").should.eql   '  +42'
+    printf('%+5d', long.fromString "-42").should.eql  '  -42'
+    printf('%+15d', long.fromString "42").should.eql  '            +42'
+    printf('%+15d', long.fromString "-42").should.eql '            -42'
 
   it 'Flag: 0', ->
     printf('%0d', 42).should.eql    '42'

@@ -54,5 +54,8 @@
   },
   "bugs": {
     "url": "https://github.com/adaltas/node-printf/issues"
+  },
+  "dependencies": {
+    "long": "^4.0.0"
   }
 }
